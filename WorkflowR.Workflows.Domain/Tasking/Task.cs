@@ -31,7 +31,7 @@ namespace WorkflowR.Workflows.Domain.Tasking
             TaskStatus oldTaskStatus = TaskStatus;
             TaskStatus = status;
 
-            RaiseStatusChangedEvent(this, new StatusChangedEventArgs(oldTaskStatus, status, TaskId));
+            RaiseStatusChangedEvent(this, new StatusChangedEventArgs(oldTaskStatus, this));
         }
     }
 }

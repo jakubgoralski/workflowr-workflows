@@ -4,15 +4,13 @@ namespace WorkflowR.Workflows.Domain.Tasking
 {
     internal class StatusChangedEventArgs : EventArgs, IDomainEvent
     {
-        public StatusChangedEventArgs(TaskStatus from, TaskStatus to, Guid taskId)
+        public TaskStatus? From { get; }
+        public Task Task { get; }
+
+        public StatusChangedEventArgs(TaskStatus from, Task task)
         {
             From = from;
-            To = to;
-            TaskId = taskId;
+            Task = task;
         }
-
-        public TaskStatus? From { get; set; }
-        public TaskStatus? To { get; set; }
-        public Guid TaskId { get; set; }
     }
 }
