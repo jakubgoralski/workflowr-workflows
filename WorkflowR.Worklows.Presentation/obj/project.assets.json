@@ -114,6 +114,42 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "WorkflowR.Workflows.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "WorkflowR.Workflows.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/WorkflowR.Workflows.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WorkflowR.Workflows.Application.dll": {}
+        }
+      },
+      "WorkflowR.Workflows.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/WorkflowR.Workflows.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WorkflowR.Workflows.Domain.dll": {}
+        }
+      },
+      "WorkflowR.Workflows.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "WorkflowR.Workflows.Application": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/WorkflowR.Workflows.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WorkflowR.Workflows.Infrastructure.dll": {}
+        }
       }
     }
   },
@@ -539,13 +575,29 @@
         "swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
+    },
+    "WorkflowR.Workflows.Application/1.0.0": {
+      "type": "project",
+      "path": "../WorkflowR.Workflows.Application/WorkflowR.Workflows.Application.csproj",
+      "msbuildProject": "../WorkflowR.Workflows.Application/WorkflowR.Workflows.Application.csproj"
+    },
+    "WorkflowR.Workflows.Domain/1.0.0": {
+      "type": "project",
+      "path": "../WorkflowR.Workflows.Domain/WorkflowR.Workflows.Domain.csproj",
+      "msbuildProject": "../WorkflowR.Workflows.Domain/WorkflowR.Workflows.Domain.csproj"
+    },
+    "WorkflowR.Workflows.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../WorkflowR.Workflows.Infrastructure/WorkflowR.Workflows.Infrastructure.csproj",
+      "msbuildProject": "../WorkflowR.Workflows.Infrastructure/WorkflowR.Workflows.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
       "Microsoft.AspNetCore.OpenApi >= 7.0.3",
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.17.2",
-      "Swashbuckle.AspNetCore >= 6.4.0"
+      "Swashbuckle.AspNetCore >= 6.4.0",
+      "WorkflowR.Workflows.Infrastructure >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -574,7 +626,11 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "E:\\Kuba\\Studia\\PO\\MGR\\MastersThesis\\WorkflowR\\WorkflowR.Workflows\\WorkflowR.Workflows.Infrastructure\\WorkflowR.Workflows.Infrastructure.csproj": {
+              "projectPath": "E:\\Kuba\\Studia\\PO\\MGR\\MastersThesis\\WorkflowR\\WorkflowR.Workflows\\WorkflowR.Workflows.Infrastructure\\WorkflowR.Workflows.Infrastructure.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -1,0 +1,109 @@
+{
+  "version": 3,
+  "targets": {
+    "net7.0": {
+      "WorkflowR.Workflows.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "WorkflowR.Workflows.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/WorkflowR.Workflows.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WorkflowR.Workflows.Application.dll": {}
+        }
+      },
+      "WorkflowR.Workflows.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/WorkflowR.Workflows.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WorkflowR.Workflows.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "WorkflowR.Workflows.Application/1.0.0": {
+      "type": "project",
+      "path": "../WorkflowR.Workflows.Application/WorkflowR.Workflows.Application.csproj",
+      "msbuildProject": "../WorkflowR.Workflows.Application/WorkflowR.Workflows.Application.csproj"
+    },
+    "WorkflowR.Workflows.Domain/1.0.0": {
+      "type": "project",
+      "path": "../WorkflowR.Workflows.Domain/WorkflowR.Workflows.Domain.csproj",
+      "msbuildProject": "../WorkflowR.Workflows.Domain/WorkflowR.Workflows.Domain.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net7.0": [
+      "WorkflowR.Workflows.Application >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Jakub\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "E:\\Kuba\\Studia\\PO\\MGR\\MastersThesis\\WorkflowR\\WorkflowR.Workflows\\WorkflowR.Workflows.Infrastructure\\WorkflowR.Workflows.Infrastructure.csproj",
+      "projectName": "WorkflowR.Workflows.Infrastructure",
+      "projectPath": "E:\\Kuba\\Studia\\PO\\MGR\\MastersThesis\\WorkflowR\\WorkflowR.Workflows\\WorkflowR.Workflows.Infrastructure\\WorkflowR.Workflows.Infrastructure.csproj",
+      "packagesPath": "C:\\Users\\Jakub\\.nuget\\packages\\",
+      "outputPath": "E:\\Kuba\\Studia\\PO\\MGR\\MastersThesis\\WorkflowR\\WorkflowR.Workflows\\WorkflowR.Workflows.Infrastructure\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Jakub\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net7.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "projectReferences": {
+            "E:\\Kuba\\Studia\\PO\\MGR\\MastersThesis\\WorkflowR\\WorkflowR.Workflows\\WorkflowR.Workflows.Application\\WorkflowR.Workflows.Application.csproj": {
+              "projectPath": "E:\\Kuba\\Studia\\PO\\MGR\\MastersThesis\\WorkflowR\\WorkflowR.Workflows\\WorkflowR.Workflows.Application\\WorkflowR.Workflows.Application.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net7.0": {
+        "targetAlias": "net7.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
