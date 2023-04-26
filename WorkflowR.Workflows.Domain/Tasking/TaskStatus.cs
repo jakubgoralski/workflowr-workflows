@@ -2,7 +2,7 @@
 
 namespace WorkflowR.Workflows.Domain.Tasking
 {
-    internal class TaskStatus : IValueObject
+    internal record TaskStatus : IValueObject
     {
         public Status Value { get; }
 

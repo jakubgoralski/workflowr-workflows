@@ -4,9 +4,8 @@ namespace WorkflowR.Workflows.Domain.Tasking
 {
     internal class Workflow : IAggregate
     {
-        public AggregateRoot<Task> aggregateRoot { get; private set; }
+        public AggregateRoot<Task> aggregateRoot { get; }
 
-        private TaskStatus WorkflowStatus = new TaskStatus(Status.None);
-        private List<Task> tasks = new List<Task>();
+        private LinkedList<Task> Tasks = new();
     }
 }
