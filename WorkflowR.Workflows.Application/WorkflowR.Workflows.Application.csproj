@@ -10,4 +10,8 @@
     <ProjectReference Include="..\WorkflowR.Workflows.Domain\WorkflowR.Workflows.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mutations\" />
+  </ItemGroup>
+
 </Project>

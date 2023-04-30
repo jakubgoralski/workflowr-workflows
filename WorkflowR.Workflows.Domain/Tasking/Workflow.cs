@@ -2,7 +2,7 @@
 
 namespace WorkflowR.Workflows.Domain.Tasking
 {
-    internal class Workflow : IAggregate
+    public class Workflow : IAggregate
     {
         public AggregateRoot<Task> AggregateRoot { get; }
 

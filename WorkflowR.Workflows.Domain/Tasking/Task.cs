@@ -1,9 +1,8 @@
-﻿using System.Data;
-using WorkflowR.Workflows.Domain.Abstraction;
+﻿using WorkflowR.Workflows.Domain.Abstraction;
 
 namespace WorkflowR.Workflows.Domain.Tasking
 {
-    internal partial class Task : IEntity
+    public class Task : IEntity
     {
         private Guid TaskId { get; set; }
         private string TaskName { get; set; } = String.Empty;
@@ -17,6 +16,12 @@ namespace WorkflowR.Workflows.Domain.Tasking
         public Task()
         {
             
+        }
+
+        public Task(Guid taskId, string taskName)
+        {
+            TaskId = taskId;
+            TaskName = taskName;
         }
 
         public Task(Guid taskId, string taskName, string taskDescription, TaskStatus taskStatus, Guid taskOwnerId, DateTime shouldBeCompletedBefore)

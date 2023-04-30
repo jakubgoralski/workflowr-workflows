@@ -1,6 +1,6 @@
 ﻿namespace WorkflowR.Workflows.Domain.Tasking
 {
-    internal interface ITaskRepository
+    public interface ITaskRepository
     {
         void Create(Task task);
         void Update(Task task);
