@@ -1,4 +1,5 @@
-﻿using WorkflowR.Workflows.Domain.Abstraction;
+﻿using System.Data;
+using WorkflowR.Workflows.Domain.Abstraction;
 
 namespace WorkflowR.Workflows.Domain.Tasking
 {
@@ -7,18 +8,25 @@ namespace WorkflowR.Workflows.Domain.Tasking
         private Guid TaskId { get; set; }
         private string TaskName { get; set; } = String.Empty;
         private string TaskDescription { get; set; } = String.Empty;
-        private TaskStatus TaskStatus { get; set; }
+        private TaskStatus TaskStatus { get; set; } = new TaskStatus(Status.None);
         private Guid TaskOwnerId { get; set; }
+        private DateTime ShouldBeCompletedBefore { get; set; }
 
         private event EventHandler<StatusChangedEventArgs> RaiseStatusChangedEvent;
 
-        public Task(Guid taskId, string taskName, string taskDescription, TaskStatus taskStatus, Guid taskOwnerId)
+        public Task()
+        {
+            
+        }
+
+        public Task(Guid taskId, string taskName, string taskDescription, TaskStatus taskStatus, Guid taskOwnerId, DateTime shouldBeCompletedBefore)
         {
             TaskId = taskId;
             TaskName = taskName;
             TaskDescription = taskDescription;
             TaskStatus = taskStatus;
             TaskOwnerId = taskOwnerId;
+            ShouldBeCompletedBefore = shouldBeCompletedBefore;
         }
 
         public void SubscribeToChangeStatusEvent(EventHandler<StatusChangedEventArgs> eventHandler)
