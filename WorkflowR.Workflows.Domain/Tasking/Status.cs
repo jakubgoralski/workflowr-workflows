@@ -1,6 +1,6 @@
 ﻿namespace WorkflowR.Workflows.Domain.Tasking
 {
-    internal enum Status
+    public enum Status
     {
         None,
         New,

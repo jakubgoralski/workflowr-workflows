@@ -18,4 +18,8 @@
     <ProjectReference Include="..\WorkflowR.Workflows.Infrastructure\WorkflowR.Workflows.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Endpoints\" />
+  </ItemGroup>
+
 </Project>

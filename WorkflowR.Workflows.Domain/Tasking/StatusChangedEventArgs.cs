@@ -2,7 +2,7 @@
 
 namespace WorkflowR.Workflows.Domain.Tasking
 {
-    internal class StatusChangedEventArgs : EventArgs, IDomainEvent
+    public class StatusChangedEventArgs : EventArgs, IDomainEvent
     {
         public TaskStatus? From { get; }
         public Task Task { get; }

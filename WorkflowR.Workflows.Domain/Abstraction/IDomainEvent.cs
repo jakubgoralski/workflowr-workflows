@@ -1,6 +1,6 @@
 ﻿namespace WorkflowR.Workflows.Domain.Abstraction
 {
-    internal interface IDomainEvent
+    public interface IDomainEvent
     {
     }
 }

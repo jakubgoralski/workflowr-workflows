@@ -3,8 +3,11 @@
 *.user
 *.sln.docstates
 
+.vs/
+
 #Docker
 **/[Ff]ile[Cc]ontent[Ii]ndex/*
+DesignTimeBuild/
 *.vsidx
 
 # Build results
