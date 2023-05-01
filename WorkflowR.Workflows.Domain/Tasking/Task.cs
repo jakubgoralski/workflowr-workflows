@@ -4,7 +4,7 @@ namespace WorkflowR.Workflows.Domain.Tasking
 {
     public class Task : IEntity
     {
-        private Guid TaskId { get; set; }
+        public Guid TaskId { get; set; }
         private string TaskName { get; set; } = String.Empty;
         private string TaskDescription { get; set; } = String.Empty;
         private TaskStatus TaskStatus { get; set; } = new TaskStatus(Status.None);

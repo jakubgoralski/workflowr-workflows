@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "cI+4Cf2cJM6UGesq7KVZGvekLLuFKKzllrZoaCgFHBfpeED/K/OHQwuQv5dyOJ/xo+fyJC6sgWROW5/FTTRdjA==",
+  "dgSpecHash": "XSJcVzpgPuc5voOlzPzGUVhqDlOAHt+6Teu6YTjC7sfPsD5lG6qSf3Cnn4wwc740lQIgRTujI4zAIqISIuTIFQ==",
   "success": true,
   "projectFilePath": "E:\\Kuba\\Studia\\PO\\MGR\\MastersThesis\\WorkflowR\\WorkflowR.Workflows\\WorkflowR.Worklows.Presentation\\WorkflowR.Worklows.Presentation.csproj",
   "expectedPackageFiles": [
@@ -32,7 +32,7 @@
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.0\\microsoft.bcl.asyncinterfaces.1.1.0.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\3.1.4\\microsoft.extensions.dependencyinjection.3.1.4.nupkg.sha512",
-    "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\3.1.4\\microsoft.extensions.dependencyinjection.abstractions.3.1.4.nupkg.sha512",
+    "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.extensions.diagnosticadapter\\3.1.4\\microsoft.extensions.diagnosticadapter.3.1.4.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.extensions.objectpool\\3.1.4\\microsoft.extensions.objectpool.3.1.4.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.extensions.options\\3.1.4\\microsoft.extensions.options.3.1.4.nupkg.sha512",

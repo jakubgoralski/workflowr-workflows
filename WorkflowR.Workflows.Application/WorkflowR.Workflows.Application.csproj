@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="Mutations\" />
+    <Folder Include="Queries\" />
   </ItemGroup>
 
 </Project>
