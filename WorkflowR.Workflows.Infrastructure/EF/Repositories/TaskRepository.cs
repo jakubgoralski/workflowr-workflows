@@ -1,13 +1,13 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using WorkflowR.Workflows.Domain.Tasking;
+﻿using WorkflowR.Workflows.Domain.Tasking;
+using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 
 namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
-        private readonly WorkflowsDbContext _workflowsDbContext;
+        private readonly WorkflowsWriteDbContext _workflowsDbContext;
 
-        public TaskRepository(WorkflowsDbContext workflowsDbContext)
+        public TaskRepository(WorkflowsWriteDbContext workflowsDbContext)
         {
             _workflowsDbContext = workflowsDbContext;
         }

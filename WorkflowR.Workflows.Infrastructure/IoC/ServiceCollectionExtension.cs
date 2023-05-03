@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WorkflowR.Workflows.Application.Tasking;
 using WorkflowR.Workflows.Domain.Tasking;
-using WorkflowR.Workflows.Infrastructure.EF;
+using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 using WorkflowR.Workflows.Infrastructure.EF.Repositories;
 using WorkflowR.Workflows.Infrastructure.Options;
 
@@ -25,18 +25,18 @@ namespace WorkflowR.Worklows.Presentation.IoC
 
             // Entity Framework - MSSQL
             string? connectionStringOption = configuration.GetSection(nameof(ConnectionStringOption)).Value;
-            services.AddDbContext<WorkflowsDbContext>(x => 
+            services.AddDbContext<WorkflowsWriteDbContext>(x => 
             {
                 x.UseSqlServer(connectionStringOption);
             });
             services.AddTransient<ITaskRepository, TaskRepository>();
 
             // Entity Framework - run migration
-            //using (var scope = services.BuildServiceProvider().CreateScope())
-            //{
-            //    var db = scope.ServiceProvider.GetRequiredService<WorkflowsDbContext>();
-            //    db.Database.Migrate();
-            //}
+            using (var scope = services.BuildServiceProvider().CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<WorkflowsWriteDbContext>();
+                db.Database.Migrate();
+            }
 
             return services;
         }
