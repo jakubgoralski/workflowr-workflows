@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WorkflowR.Workflows.Application.Tasking;
 using WorkflowR.Workflows.Domain.Tasking;
@@ -10,14 +11,7 @@ namespace WorkflowR.Worklows.Presentation.IoC
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.Configure<ConnectionStringOption>(configuration.GetSection(nameof(ConnectionStringOption)));
-
-            return services;
-        }
-
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             // GrapqhQL
             services
@@ -30,8 +24,19 @@ namespace WorkflowR.Worklows.Presentation.IoC
                 .AddMutationType<TaskMutations>();
 
             // Entity Framework - MSSQL
-            services.AddSingleton<WorkflowsDbContext>();
-            services.AddSingleton<ITaskRepository, TaskRepository>();
+            string? connectionStringOption = configuration.GetSection(nameof(ConnectionStringOption)).Value;
+            services.AddDbContext<WorkflowsDbContext>(x => 
+            {
+                x.UseSqlServer(connectionStringOption);
+            });
+            services.AddTransient<ITaskRepository, TaskRepository>();
+
+            // Entity Framework - run migration
+            //using (var scope = services.BuildServiceProvider().CreateScope())
+            //{
+            //    var db = scope.ServiceProvider.GetRequiredService<WorkflowsDbContext>();
+            //    db.Database.Migrate();
+            //}
 
             return services;
         }
