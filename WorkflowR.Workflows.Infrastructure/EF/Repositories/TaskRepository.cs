@@ -12,26 +12,29 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
             _workflowsDbContext = workflowsDbContext;
         }
 
-        public void Create(Domain.Tasking.Task task)
+        public async System.Threading.Tasks.Task CreateAsync(Domain.Tasking.Task task)
         {
-            _workflowsDbContext.Tasks.Add(task);
+            await _workflowsDbContext.Tasks.AddAsync(task);
+            await _workflowsDbContext.SaveChangesAsync();
         }
 
-        public void Delete(Guid guid)
+        public Domain.Tasking.Task ReadAsync(Guid guid)
         {
-            var task = _workflowsDbContext.Tasks.FirstOrDefault(x => x.TaskId.Equals(guid));
-            
-            _workflowsDbContext.Tasks.Remove(task);
+            return _workflowsDbContext.Tasks.FirstOrDefault(x => x.Id.Equals(guid));
         }
 
-        public Domain.Tasking.Task Read(Guid guid)
-        {
-            return _workflowsDbContext.Tasks.FirstOrDefault(x => x.TaskId.Equals(guid));
-        }
-
-        public void Update(Domain.Tasking.Task task)
+        public async System.Threading.Tasks.Task UpdateAsync(Domain.Tasking.Task task)
         {
             _workflowsDbContext.Tasks.Update(task);
+            await _workflowsDbContext.SaveChangesAsync();
+        }
+
+        public async System.Threading.Tasks.Task DeleteAsync(Guid guid)
+        {
+            var task = _workflowsDbContext.Tasks.FirstOrDefault(x => x.Id.Equals(guid));
+
+            _workflowsDbContext.Tasks.Remove(task);
+            await _workflowsDbContext.SaveChangesAsync();
         }
     }
 }

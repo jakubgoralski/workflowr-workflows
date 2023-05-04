@@ -12,26 +12,40 @@ namespace WorkflowR.Workflows.Application.Tasking
             _taskRepository = taskRepository;
         }
 
-        public Task<bool> AddTaskAsync(string name)
+        public async Task<bool> AddTaskAsync(
+               string name,
+               string description,
+               Guid taskOwnerId,
+               DateTime shouldBeCompletedBefore,
+               bool informManagerAboutProgress,
+               bool informUserWhenPreviousTaskIsCompleted)
         {
-            Domain.Tasking.Task task = new Domain.Tasking.Task(Guid.NewGuid(), name);
-            _taskRepository.Create(task);
+            Domain.Tasking.Task task = new Domain.Tasking.Task(
+                Guid.NewGuid(),
+                name,
+                description,
+                Status.New,
+                taskOwnerId,
+                shouldBeCompletedBefore,
+                informManagerAboutProgress,
+                informUserWhenPreviousTaskIsCompleted);
+            await _taskRepository.CreateAsync(task);
 
-            return System.Threading.Tasks.Task.FromResult(true);
+            return true;
         }
 
         // TODO: Implement Update
 
-        public Task<bool> DeleteTaskAsync(Guid taskId)
+        public async Task<bool> DeleteTaskAsync(Guid taskId)
         {
-            Domain.Tasking.Task task = _taskRepository.Read(taskId);
+            Domain.Tasking.Task task = _taskRepository.ReadAsync(taskId);
 
             if (task is null)
                 throw new TaskDoesNotExistException(taskId);
 
-            _taskRepository.Delete(taskId);
+            await _taskRepository.DeleteAsync(taskId);
 
-            return System.Threading.Tasks.Task.FromResult(true);
+            return true;
         }
     }
 }

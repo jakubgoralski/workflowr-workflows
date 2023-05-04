@@ -17,9 +17,8 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Contexts
         {
             modelBuilder.HasDefaultSchema("workflows");
 
-            var configuration = new DbConfiguration();
+            var configuration = new ReadConfiguration();
             modelBuilder.ApplyConfiguration<TaskReadModel>(configuration);
-            modelBuilder.ApplyConfiguration<TaskStatusReadModel>(configuration);
         }
     }
 }

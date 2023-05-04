@@ -25,17 +25,23 @@ namespace WorkflowR.Worklows.Presentation.IoC
 
             // Entity Framework - MSSQL
             string? connectionStringOption = configuration.GetSection(nameof(ConnectionStringOption)).Value;
+            services.AddDbContext<WorkflowsReadDbContext>(x =>
+            {
+                x.UseSqlServer(connectionStringOption);
+            });
             services.AddDbContext<WorkflowsWriteDbContext>(x => 
             {
                 x.UseSqlServer(connectionStringOption);
             });
-            services.AddTransient<ITaskRepository, TaskRepository>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
 
             // Entity Framework - run migration
             using (var scope = services.BuildServiceProvider().CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<WorkflowsWriteDbContext>();
-                db.Database.Migrate();
+                var db1 = scope.ServiceProvider.GetRequiredService<WorkflowsReadDbContext>();
+                db1.Database.Migrate();
+                var db2 = scope.ServiceProvider.GetRequiredService<WorkflowsWriteDbContext>();
+                db2.Database.Migrate();
             }
 
             return services;

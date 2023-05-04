@@ -4,10 +4,10 @@ namespace WorkflowR.Workflows.Domain.Tasking
 {
     public class StatusChangedEventArgs : EventArgs, IDomainEvent
     {
-        public TaskStatus? From { get; }
+        public Status? From { get; }
         public Task Task { get; }
 
-        public StatusChangedEventArgs(TaskStatus from, Task task)
+        public StatusChangedEventArgs(Status from, Task task)
         {
             From = from;
             Task = task;
