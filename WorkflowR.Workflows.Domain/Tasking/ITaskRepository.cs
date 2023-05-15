@@ -2,9 +2,9 @@
 {
     public interface ITaskRepository
     {
-        void Create(Task task);
-        void Update(Task task);
-        Task Read(Guid guid);
-        void Delete(Guid guid);
+        System.Threading.Tasks.Task CreateAsync(Task task);
+        Task<bool> ExistsAsync(Guid taskId);
+        System.Threading.Tasks.Task UpdateAsync(Task task);
+        System.Threading.Tasks.Task DeleteAsync(Guid guid);
     }
 }
