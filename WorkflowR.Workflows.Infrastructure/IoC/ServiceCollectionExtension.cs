@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WorkflowR.Workflows.Application.Tasking;
 using WorkflowR.Workflows.Domain.Tasking;
 using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 using WorkflowR.Workflows.Infrastructure.EF.Repositories;
+using WorkflowR.Workflows.Infrastructure.EF.Repositories.Interfaces;
 using WorkflowR.Workflows.Infrastructure.Options;
+using WorkflowR.Workflows.Infrastructure.Tasking;
 
 namespace WorkflowR.Worklows.Presentation.IoC
 {
@@ -34,6 +35,7 @@ namespace WorkflowR.Worklows.Presentation.IoC
                 x.UseSqlServer(connectionStringOption);
             });
             services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<ITaskReadRepository, TaskReadRepository>();
 
             // Entity Framework - run migration
             using (var scope = services.BuildServiceProvider().CreateScope())

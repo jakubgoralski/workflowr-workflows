@@ -1,7 +1,7 @@
 ﻿using WorkflowR.Workflows.Application.Exceptions;
 using WorkflowR.Workflows.Domain.Tasking;
 
-namespace WorkflowR.Workflows.Application.Tasking
+namespace WorkflowR.Workflows.Infrastructure.Tasking
 {
     public class TaskMutations
     {
@@ -38,9 +38,9 @@ namespace WorkflowR.Workflows.Application.Tasking
 
         public async Task<bool> DeleteTaskAsync(Guid taskId)
         {
-            Domain.Tasking.Task task = _taskRepository.ReadAsync(taskId);
+            bool doesTaskExist = await _taskRepository.ExistsAsync(taskId);
 
-            if (task is null)
+            if (!doesTaskExist)
                 throw new TaskDoesNotExistException(taskId);
 
             await _taskRepository.DeleteAsync(taskId);

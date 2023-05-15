@@ -1,4 +1,5 @@
-﻿using WorkflowR.Workflows.Domain.Tasking;
+﻿using Microsoft.EntityFrameworkCore;
+using WorkflowR.Workflows.Domain.Tasking;
 using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 
 namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
@@ -7,7 +8,8 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
     {
         private readonly WorkflowsWriteDbContext _workflowsDbContext;
 
-        public TaskRepository(WorkflowsWriteDbContext workflowsDbContext)
+        public TaskRepository(
+            WorkflowsWriteDbContext workflowsDbContext)
         {
             _workflowsDbContext = workflowsDbContext;
         }
@@ -18,9 +20,9 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
             await _workflowsDbContext.SaveChangesAsync();
         }
 
-        public Domain.Tasking.Task ReadAsync(Guid guid)
+        public async Task<bool> ExistsAsync(Guid taskId)
         {
-            return _workflowsDbContext.Tasks.FirstOrDefault(x => x.Id.Equals(guid));
+            return await _workflowsDbContext.Tasks.AnyAsync(x => x.Id.Equals(taskId));
         }
 
         public async System.Threading.Tasks.Task UpdateAsync(Domain.Tasking.Task task)
