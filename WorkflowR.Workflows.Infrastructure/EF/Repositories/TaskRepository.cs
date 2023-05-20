@@ -17,7 +17,7 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
         public async System.Threading.Tasks.Task CreateAsync(Domain.Tasking.Task task)
         {
             await _workflowsDbContext.Tasks.AddAsync(task);
-            await _workflowsDbContext.SaveChangesAsync();
+            await _workflowsDbContext.SaveEntitiesAsync();
         }
 
         public async Task<bool> ExistsAsync(Guid taskId)
@@ -28,7 +28,7 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
         public async System.Threading.Tasks.Task UpdateAsync(Domain.Tasking.Task task)
         {
             _workflowsDbContext.Tasks.Update(task);
-            await _workflowsDbContext.SaveChangesAsync();
+            await _workflowsDbContext.SaveEntitiesAsync();
         }
 
         public async System.Threading.Tasks.Task DeleteAsync(Guid guid)
@@ -36,7 +36,7 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
             var task = _workflowsDbContext.Tasks.FirstOrDefault(x => x.Id.Equals(guid));
 
             _workflowsDbContext.Tasks.Remove(task);
-            await _workflowsDbContext.SaveChangesAsync();
+            await _workflowsDbContext.SaveEntitiesAsync();
         }
     }
 }

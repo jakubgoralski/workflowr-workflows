@@ -1,14 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using WorkflowR.Workflows.Infrastructure.EF.Configs;
+using WorkflowR.Workflows.Infrastructure.MediatR;
 
 namespace WorkflowR.Workflows.Infrastructure.EF.Contexts
 {
     public sealed class WorkflowsWriteDbContext : DbContext
     {
         public DbSet<Domain.Tasking.Task> Tasks { get; set; }
+        public readonly IMediator _mediator;
 
-        public WorkflowsWriteDbContext(DbContextOptions<WorkflowsWriteDbContext> options) : base(options)
+        public WorkflowsWriteDbContext(
+            DbContextOptions<WorkflowsWriteDbContext> options,
+            IMediator mediator)
+                : base(options)
         {
+            _mediator = mediator;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -17,6 +24,15 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Contexts
 
             var configuration = new WriteConfiguration();
             modelBuilder.ApplyConfiguration<Domain.Tasking.Task>(configuration);
+        }
+
+        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken =  default)
+        {
+            await _mediator.DispatchDomainEventsAsync(this);
+
+            await SaveChangesAsync(cancellationToken);
+
+            return true;
         }
     }
 }

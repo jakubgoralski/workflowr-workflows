@@ -2,7 +2,7 @@
 
 namespace WorkflowR.Workflows.Domain.Tasking
 {
-    public class Task : IEntity
+    public class Task : Entity
     {
         public Guid Id { get; set; }
         private string TaskName { get; set; } = String.Empty;
@@ -12,8 +12,6 @@ namespace WorkflowR.Workflows.Domain.Tasking
         private DateTime ShouldBeCompletedBefore { get; set; }
         private bool InformManagerAboutProgress { get; set; }
         private bool InformUserWhenPreviousTaskIsCompleted { get; set; }
-
-        private event EventHandler<StatusChangedEventArgs> RaiseStatusChangedEvent;
 
         public Task()
         {
@@ -46,17 +44,12 @@ namespace WorkflowR.Workflows.Domain.Tasking
             InformUserWhenPreviousTaskIsCompleted = informUserWhenPreviousTaskIsCompleted;
         }
 
-        public void SubscribeToChangeStatusEvent(EventHandler<StatusChangedEventArgs> eventHandler)
-        {
-            RaiseStatusChangedEvent += eventHandler;
-        }
-
         public void ChangeStatus(Status status)
         {
             Status oldTaskStatus = TaskStatus;
             TaskStatus = status;
 
-            RaiseStatusChangedEvent(this, new StatusChangedEventArgs(oldTaskStatus, this));
+            RaiseDomainEvent(new StatusChangedDomainEvent(oldTaskStatus, TaskStatus, Id, TaskName));
         }
     }
 }
