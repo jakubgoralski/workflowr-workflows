@@ -47,7 +47,7 @@ namespace WorkflowR.Worklows.Presentation.IoC
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<StatusChangedDomainEventHandler>());
 
             // RabbitMq
-            var factory = new ConnectionFactory { HostName = "localhost" };
+            var factory = new ConnectionFactory { HostName = "rabbitmq" }; // localhost for self run / rabbitmq for container
             var connection = factory.CreateConnection();
             services.AddSingleton(connection);
             services.AddSingleton<IConnectionFactory, ConnectionFactory>();
