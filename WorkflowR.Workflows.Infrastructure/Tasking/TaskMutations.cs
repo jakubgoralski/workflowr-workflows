@@ -1,15 +1,21 @@
 ﻿using WorkflowR.Workflows.Application.Exceptions;
 using WorkflowR.Workflows.Domain.Tasking;
+using WorkflowR.Workflows.Infrastructure.EF.ReadModels;
+using WorkflowR.Workflows.Infrastructure.EF.Repositories.Interfaces;
 
 namespace WorkflowR.Workflows.Infrastructure.Tasking
 {
     public class TaskMutations
     {
         private readonly ITaskRepository _taskRepository;
+        private readonly ITaskReadRepository _taskReadRepository;
 
-        public TaskMutations(ITaskRepository taskRepository)
+        public TaskMutations(
+            ITaskRepository taskRepository,
+            ITaskReadRepository taskReadRepository)
         {
             _taskRepository = taskRepository;
+            _taskReadRepository = taskReadRepository;
         }
 
         public async Task<bool> AddTaskAsync(
@@ -34,7 +40,26 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
             return true;
         }
 
-        // TODO: Implement Update
+        public bool UpdateStatus(Guid taskId, int newStatus)
+        {
+            TaskReadModel task = _taskReadRepository.ReadAsync(taskId);
+
+            Domain.Tasking.Task taskDomain = new Domain.Tasking.Task(
+                task.Id,
+                task.TaskName,
+                task.TaskDescription,
+                (Status)task.TaskStatus,
+                task.TaskOwnerId,
+                task.ShouldBeCompletedBefore,
+                task.InformManagerAboutProgress,
+                task.InformUserWhenPreviousTaskIsCompleted);
+
+            taskDomain.ChangeStatus((Status)newStatus);
+
+            _taskRepository.UpdateAsync(taskDomain);
+
+            return true;
+        }
 
         public async Task<bool> DeleteTaskAsync(Guid taskId)
         {

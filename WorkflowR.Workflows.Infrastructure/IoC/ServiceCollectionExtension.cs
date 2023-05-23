@@ -1,11 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RabbitMQ.Client;
+using WorkflowR.Workflows.Application.EventHandlers;
+using WorkflowR.Workflows.Application.Messaging.Interfaces;
 using WorkflowR.Workflows.Domain.Tasking;
 using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 using WorkflowR.Workflows.Infrastructure.EF.Repositories;
 using WorkflowR.Workflows.Infrastructure.EF.Repositories.Interfaces;
 using WorkflowR.Workflows.Infrastructure.Options;
+using WorkflowR.Workflows.Infrastructure.RabbitMq;
+using WorkflowR.Workflows.Infrastructure.RabbitMq.Interfaces;
 using WorkflowR.Workflows.Infrastructure.Tasking;
 
 namespace WorkflowR.Worklows.Presentation.IoC
@@ -36,6 +42,18 @@ namespace WorkflowR.Worklows.Presentation.IoC
             });
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<ITaskReadRepository, TaskReadRepository>();
+
+            // MediatR
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<StatusChangedDomainEventHandler>());
+
+            // RabbitMq
+            var factory = new ConnectionFactory { HostName = "rabbitmq" }; // localhost for self run / rabbitmq for container
+            var connection = factory.CreateConnection();
+            services.AddSingleton(connection);
+            services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+            services.AddSingleton<ChannelAccessor>();
+            services.AddSingleton<IChannelFactory, ChannelFactory>();
+            services.AddSingleton<IMessageProducer, MessageProducer>();
 
             // Entity Framework - run migration
             using (var scope = services.BuildServiceProvider().CreateScope())
