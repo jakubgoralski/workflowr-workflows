@@ -35,6 +35,9 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
         {
             var task = _workflowsDbContext.Tasks.FirstOrDefault(x => x.Id.Equals(guid));
 
+            if (task is null)
+                return;
+
             _workflowsDbContext.Tasks.Remove(task);
             await _workflowsDbContext.SaveEntitiesAsync();
         }

@@ -21,7 +21,7 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
 
         public TaskReadModel ReadAsync(Guid guid)
         {
-            return _workflowsReadDbContext.Tasks.FirstOrDefault(x => x.Id.Equals(guid));
+            return _workflowsReadDbContext.Tasks.First(x => x.Id.Equals(guid));
         }
     }
 }
