@@ -1,7 +1,9 @@
-﻿using WorkflowR.Workflows.Application.Exceptions;
+﻿using employees;
+using WorkflowR.Workflows.Application.Exceptions;
+using WorkflowR.Workflows.Domain.Managing;
 using WorkflowR.Workflows.Domain.Tasking;
 using WorkflowR.Workflows.Infrastructure.EF.ReadModels;
-using WorkflowR.Workflows.Infrastructure.EF.Repositories.Interfaces;
+using WorkflowR.Workflows.Infrastructure.Repositories.Interfaces;
 
 namespace WorkflowR.Workflows.Infrastructure.Tasking
 {
@@ -9,13 +11,16 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
     {
         private readonly ITaskRepository _taskRepository;
         private readonly ITaskReadRepository _taskReadRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
         public TaskMutations(
             ITaskRepository taskRepository,
-            ITaskReadRepository taskReadRepository)
+            ITaskReadRepository taskReadRepository,
+            IEmployeeRepository employeeRepository)
         {
             _taskRepository = taskRepository;
             _taskReadRepository = taskReadRepository;
+            _employeeRepository = employeeRepository;
         }
 
         public async Task<bool> AddTaskAsync(
@@ -40,7 +45,7 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
             return true;
         }
 
-        public bool UpdateStatus(Guid taskId, int newStatus)
+        public async System.Threading.Tasks.Task<bool> UpdateStatusAsync(Guid taskId, int newStatus)
         {
             TaskReadModel task = _taskReadRepository.ReadAsync(taskId);
 
@@ -54,7 +59,9 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
                 task.InformManagerAboutProgress,
                 task.InformUserWhenPreviousTaskIsCompleted);
 
-            taskDomain.ChangeStatus((Status)newStatus);
+            string email = await _employeeRepository.GetEmailOfEmployeeAsync(task.TaskOwnerId);
+
+            taskDomain.ChangeStatus((Status)newStatus, email);
 
             _taskRepository.UpdateAsync(taskDomain);
 

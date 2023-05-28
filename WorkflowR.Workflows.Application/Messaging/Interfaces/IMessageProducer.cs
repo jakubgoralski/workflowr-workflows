@@ -2,6 +2,6 @@
 {
     public interface IMessageProducer
     {
-        void Publish(string message);
+        void Publish(EmailObject message);
     }
 }

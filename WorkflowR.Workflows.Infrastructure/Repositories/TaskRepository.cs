@@ -2,7 +2,7 @@
 using WorkflowR.Workflows.Domain.Tasking;
 using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 
-namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
+namespace WorkflowR.Workflows.Infrastructure.Repositories
 {
     public class TaskRepository : ITaskRepository
     {

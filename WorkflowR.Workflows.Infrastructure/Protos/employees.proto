@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "employees";
+
+package greet;
+
+service EmployeesGrpcService {
+  rpc GetEmail (GetEmailRequest) returns (GetEmailReply);
+}
+
+message GetEmailRequest {
+  string id = 1;
+}
+
+message GetEmailReply {
+  string email = 1;
+}

@@ -44,12 +44,12 @@ namespace WorkflowR.Workflows.Domain.Tasking
             InformUserWhenPreviousTaskIsCompleted = informUserWhenPreviousTaskIsCompleted;
         }
 
-        public void ChangeStatus(Status status)
+        public void ChangeStatus(Status status, string emailTo)
         {
             Status oldTaskStatus = TaskStatus;
             TaskStatus = status;
 
-            RaiseDomainEvent(new StatusChangedDomainEvent(oldTaskStatus, TaskStatus, Id, TaskName));
+            RaiseDomainEvent(new StatusChangedDomainEvent(oldTaskStatus, TaskStatus, Id, TaskName, emailTo));
         }
     }
 }
