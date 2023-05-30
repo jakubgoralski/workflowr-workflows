@@ -14,6 +14,7 @@ using employees;
 using WorkflowR.Workflows.Infrastructure.Repositories.Interfaces;
 using WorkflowR.Workflows.Infrastructure.Repositories;
 using WorkflowR.Workflows.Domain.Managing;
+using Grpc.Core;
 
 namespace WorkflowR.Worklows.Presentation.IoC
 {
@@ -21,13 +22,6 @@ namespace WorkflowR.Worklows.Presentation.IoC
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            // gRPC
-            services.AddGrpcClient<EmployeesGrpcService.EmployeesGrpcServiceClient>(o =>
-            {
-                o.Address = new Uri("employees");
-            });
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-
             // GrapqhQL
             services
                 .AddGraphQLServer()
@@ -37,6 +31,21 @@ namespace WorkflowR.Worklows.Presentation.IoC
                  })
                 .AddQueryType<TaskQueries>()
                 .AddMutationType<TaskMutations>();
+
+            // gRPC
+            services.AddGrpcClient<EmployeesGrpcService.EmployeesGrpcServiceClient>(o =>
+            {
+                o.Address = new Uri("http://employees:81");
+            })
+            .ConfigurePrimaryHttpMessageHandler(() =>
+             {
+                 var handler = new HttpClientHandler();
+                 handler.ServerCertificateCustomValidationCallback =
+                     HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+
+                 return handler;
+             });
+             services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
 
             // Entity Framework - MSSQL
             string? connectionStringOption = configuration.GetSection(nameof(ConnectionStringOption)).Value;

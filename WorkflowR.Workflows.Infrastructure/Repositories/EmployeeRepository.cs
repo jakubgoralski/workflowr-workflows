@@ -13,11 +13,19 @@ namespace WorkflowR.Workflows.Infrastructure.Repositories
         }
         public async Task<string> GetEmailOfEmployeeAsync(Guid employeeId)
         {
-            GetEmailRequest getEmailRequest = new GetEmailRequest();
-            getEmailRequest.Id = employeeId.ToString();
+            try
+            {
+                GetEmailRequest getEmailRequest = new GetEmailRequest();
+                getEmailRequest.Id = employeeId.ToString();
 
-            GetEmailReply response =  await _grpcClient.GetEmailAsync(getEmailRequest);
-            return response.Email;
+                GetEmailReply response = await _grpcClient.GetEmailAsync(getEmailRequest);
+                return response.Email;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
     }
 }

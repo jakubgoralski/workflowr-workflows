@@ -63,7 +63,7 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
 
             taskDomain.ChangeStatus((Status)newStatus, email);
 
-            _taskRepository.UpdateAsync(taskDomain);
+            await _taskRepository.UpdateAsync(taskDomain);
 
             return true;
         }
