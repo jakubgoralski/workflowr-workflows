@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Options;
-using System.Net;
 using WorkflowR.Worklows.Presentation.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,23 +10,42 @@ builder.Services.AddPresentation();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    var port = 443;
-
-
-    serverOptions.Listen(IPAddress.Any, port, listenOptions => {
-        // Enable support for HTTP1 and HTTP2 (required if you want to host gRPC endpoints)
-        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-        // Configure Kestrel to use a certificate from a local .PFX file for hosting HTTPS
-        listenOptions.UseHttps();
-    });
-});
-
 var app = builder.Build();
 
-app.UseHttpsRedirection();
-app.UseRouting();
 app.MapGraphQL();
 
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+var summaries = new[]
+{
+    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+};
+
+app.MapGet("/weatherforecast", () =>
+{
+    var forecast = Enumerable.Range(1, 5).Select(index =>
+        new WeatherForecast
+        (
+            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            Random.Shared.Next(-20, 55),
+            summaries[Random.Shared.Next(summaries.Length)]
+        ))
+        .ToArray();
+    return forecast;
+})
+.WithName("GetWeatherForecast")
+.WithOpenApi();
+
 app.Run();
+
+internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+{
+    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+}
