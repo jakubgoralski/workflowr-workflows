@@ -194,6 +194,3 @@ Icon?
 # Visual Studio temp something
 .vs/
 
-# Passwords
-**/appsettings.json
-WorkflowR.Worklows.Presentation/appsettings.json
