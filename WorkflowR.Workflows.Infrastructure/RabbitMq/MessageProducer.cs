@@ -1,6 +1,9 @@
 ﻿using RabbitMQ.Client;
+using System.Text.Json;
+using System.Text;
 using WorkflowR.Workflows.Application.Messaging.Interfaces;
 using WorkflowR.Workflows.Infrastructure.RabbitMq.Interfaces;
+using WorkflowR.Workflows.Application.Messaging;
 
 namespace WorkflowR.Workflows.Infrastructure.RabbitMq
 {
@@ -13,9 +16,10 @@ namespace WorkflowR.Workflows.Infrastructure.RabbitMq
             _channel = channelFactory.Create();
         }
 
-        public void Publish(string message)
+        public void Publish(EmailObject emailobject)
         {
-            byte[] messageBodyBytes = System.Text.Encoding.UTF8.GetBytes(message);
+            var messageJson = JsonSerializer.Serialize(emailobject);
+            byte[] messageBodyBytes = System.Text.Encoding.UTF8.GetBytes(messageJson);
             _channel.ExchangeDeclare("jgexchange", "topic", false, false);
             _channel.BasicPublish("jgexchange", "jgroutingkey", true, _channel.CreateBasicProperties(), messageBodyBytes);
         }

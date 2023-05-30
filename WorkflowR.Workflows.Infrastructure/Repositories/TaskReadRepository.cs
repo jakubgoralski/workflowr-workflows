@@ -1,8 +1,8 @@
 ﻿using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 using WorkflowR.Workflows.Infrastructure.EF.ReadModels;
-using WorkflowR.Workflows.Infrastructure.EF.Repositories.Interfaces;
+using WorkflowR.Workflows.Infrastructure.Repositories.Interfaces;
 
-namespace WorkflowR.Workflows.Infrastructure.EF.Repositories
+namespace WorkflowR.Workflows.Infrastructure.Repositories
 {
     public class TaskReadRepository : ITaskReadRepository
     {
