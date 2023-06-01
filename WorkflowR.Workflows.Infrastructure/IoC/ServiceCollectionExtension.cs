@@ -34,7 +34,7 @@ namespace WorkflowR.Worklows.Presentation.IoC
             // gRPC
             services.AddGrpcClient<EmployeesGrpcService.EmployeesGrpcServiceClient>(o =>
             {
-                o.Address = new Uri("localhost"); // http://employees:81
+                o.Address = new Uri("http://localhost:32765"); // http://employees:81
             })
             .ConfigurePrimaryHttpMessageHandler(() =>
              {
@@ -59,6 +59,7 @@ namespace WorkflowR.Worklows.Presentation.IoC
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<IWorkflowRepository, WorkflowRepository>();
             services.AddScoped<ITaskReadRepository, TaskReadRepository>();
+            services.AddScoped<IWorkflowReadRepository, WorkflowReadRepository>();
 
             // MediatR
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<StatusChangedDomainEventHandler>());
