@@ -16,8 +16,7 @@ namespace WorkflowR.Workflows.Application.EventHandlers
 
         public System.Threading.Tasks.Task Handle(StatusChangedDomainEvent notification, CancellationToken cancellationToken)
         {
-            string message = $"Task `{notification.TaskName}` (id: {notification.TaskId}) status has been changed from `{notification.From}` to `{notification.To}`.";
-            EmailObject emailobject = new EmailObject(notification.SentToEmailAddress, message);
+            EmailObject emailobject = new EmailObject(notification.SentToEmailAddress, notification.Message);
 
             _messageProducer.Publish(emailobject);
 

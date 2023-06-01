@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using WorkflowR.Workflows.Application.EventHandlers;
 using WorkflowR.Workflows.Application.Messaging.Interfaces;
-using WorkflowR.Workflows.Domain.Tasking;
 using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 using WorkflowR.Workflows.Infrastructure.Options;
 using WorkflowR.Workflows.Infrastructure.RabbitMq;
@@ -14,6 +13,9 @@ using employees;
 using WorkflowR.Workflows.Infrastructure.Repositories.Interfaces;
 using WorkflowR.Workflows.Infrastructure.Repositories;
 using WorkflowR.Workflows.Domain.Managing;
+using WorkflowR.Workflows.Domain.Tasking.Repositories;
+using Microsoft.AspNetCore.Authorization.Policy;
+using WorkflowR.Workflows.Domain.Notifying;
 
 namespace WorkflowR.Worklows.Presentation.IoC
 {
@@ -21,6 +23,11 @@ namespace WorkflowR.Worklows.Presentation.IoC
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            // Domain Policies
+            services.AddSingleton<INotificationPolicy, NotifyTaskOwnerPolicy>();
+            services.AddSingleton<INotificationPolicy, NotifyOwnerOfNextTaskPolicy>();
+            services.AddSingleton<INotificationPolicy, NotifyManagerPolicy>();
+
             // GrapqhQL
             services
                 .AddGraphQLServer()

@@ -1,9 +1,8 @@
-﻿using employees;
-using WorkflowR.Workflows.Application.Exceptions;
+﻿using WorkflowR.Workflows.Application.Exceptions;
 using WorkflowR.Workflows.Domain.Managing;
 using WorkflowR.Workflows.Domain.Tasking;
+using WorkflowR.Workflows.Domain.Tasking.Repositories;
 using WorkflowR.Workflows.Infrastructure.EF.ReadModels;
-using WorkflowR.Workflows.Infrastructure.Extensions;
 using WorkflowR.Workflows.Infrastructure.Repositories.Interfaces;
 
 namespace WorkflowR.Workflows.Infrastructure.Tasking
@@ -90,26 +89,10 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
 
         public async System.Threading.Tasks.Task<bool> UpdateStatusAsync(Guid taskId, int newStatus)
         {
-            TaskReadModel task = _taskReadRepository.ReadAsync(taskId);
+            Domain.Tasking.Task task = await _taskRepository.GetAsync(taskId);
+            await task.ChangeStatusAsync((Status)newStatus);
 
-            Domain.Tasking.Task taskDomain = new Domain.Tasking.Task(
-                task.Id,
-                task.TaskName,
-                task.TaskDescription,
-                (Status)task.TaskStatus,
-                task.TaskOwnerId,
-                task.ShouldBeCompletedBefore,
-                task.InformManagerAboutProgress,
-                task.InformUserOfNextTaskWhenThisIsCompleted,
-                task.NextTaskId,
-                task.Workflow.Id);
-
-            string email = await _employeeRepository.GetEmailOfEmployeeAsync(task.TaskOwnerId);
-
-            taskDomain.ChangeStatus((Status)newStatus, email);
-
-            await _taskRepository.UpdateAsync(taskDomain);
-
+            await _taskRepository.UpdateAsync(task);
             return true;
         }
 

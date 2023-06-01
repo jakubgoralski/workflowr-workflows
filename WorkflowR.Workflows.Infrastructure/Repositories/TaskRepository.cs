@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WorkflowR.Workflows.Domain.Tasking;
+using WorkflowR.Workflows.Domain.Tasking.Repositories;
 using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 
 namespace WorkflowR.Workflows.Infrastructure.Repositories
@@ -41,5 +41,18 @@ namespace WorkflowR.Workflows.Infrastructure.Repositories
             _workflowsDbContext.Tasks.Remove(task);
             await _workflowsDbContext.SaveEntitiesAsync();
         }
+
+        public async Task<Domain.Tasking.Task> GetAsync(Guid taskId)
+            => await _workflowsDbContext.Tasks
+            //.Include("TaskName")
+            //.Include("TaskOwnerId")
+            //.Include("TaskDescription")
+            //.Include("TaskStatus")
+            //.Include("ShouldBeCompletedBefore")
+            //.Include("InformManagerAboutProgress")
+            //.Include("InformUserOfNextTaskWhenThisIsCompleted")
+            //.Include("NextTaskId")
+            //.Include("WorkflowId")
+            .SingleOrDefaultAsync(x => x.Id == taskId);
     }
 }

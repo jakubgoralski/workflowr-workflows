@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WorkflowR.Workflows.Domain.Tasking;
+using WorkflowR.Workflows.Domain.Tasking.Repositories;
 using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 
 namespace WorkflowR.Workflows.Infrastructure.Repositories
