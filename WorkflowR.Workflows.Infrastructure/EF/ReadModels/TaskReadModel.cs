@@ -1,6 +1,4 @@
-﻿using WorkflowR.Workflows.Domain.Tasking;
-
-namespace WorkflowR.Workflows.Infrastructure.EF.ReadModels
+﻿namespace WorkflowR.Workflows.Infrastructure.EF.ReadModels
 {
     public class TaskReadModel
     {
@@ -11,6 +9,9 @@ namespace WorkflowR.Workflows.Infrastructure.EF.ReadModels
         public Guid TaskOwnerId { get; set; }
         public DateTime ShouldBeCompletedBefore { get; set; }
         public bool InformManagerAboutProgress { get; set; }
-        public bool InformUserWhenPreviousTaskIsCompleted { get; set; }
+        public bool InformUserOfNextTaskWhenThisIsCompleted { get; set; }
+        public Guid NextTaskId { get; set; }
+
+        public WorkflowReadModel Workflow { get; set; }
     }
 }

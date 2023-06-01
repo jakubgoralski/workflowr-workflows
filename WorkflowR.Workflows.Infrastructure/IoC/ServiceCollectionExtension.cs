@@ -14,7 +14,6 @@ using employees;
 using WorkflowR.Workflows.Infrastructure.Repositories.Interfaces;
 using WorkflowR.Workflows.Infrastructure.Repositories;
 using WorkflowR.Workflows.Domain.Managing;
-using Grpc.Core;
 
 namespace WorkflowR.Worklows.Presentation.IoC
 {
@@ -35,7 +34,7 @@ namespace WorkflowR.Worklows.Presentation.IoC
             // gRPC
             services.AddGrpcClient<EmployeesGrpcService.EmployeesGrpcServiceClient>(o =>
             {
-                o.Address = new Uri("http://employees:81");
+                o.Address = new Uri("localhost"); // http://employees:81
             })
             .ConfigurePrimaryHttpMessageHandler(() =>
              {
@@ -58,13 +57,14 @@ namespace WorkflowR.Worklows.Presentation.IoC
                 x.UseSqlServer(connectionStringOption);
             });
             services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<IWorkflowRepository, WorkflowRepository>();
             services.AddScoped<ITaskReadRepository, TaskReadRepository>();
 
             // MediatR
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<StatusChangedDomainEventHandler>());
 
             // RabbitMq
-            var factory = new ConnectionFactory { HostName = "rabbitmq" }; // localhost for self run / rabbitmq for container
+            var factory = new ConnectionFactory { HostName = "localhost" }; // localhost for self run / rabbitmq for container
             var connection = factory.CreateConnection();
             services.AddSingleton(connection);
             services.AddSingleton<IConnectionFactory, ConnectionFactory>();

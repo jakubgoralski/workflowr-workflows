@@ -29,7 +29,8 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
                Guid taskOwnerId,
                DateTime shouldBeCompletedBefore,
                bool informManagerAboutProgress,
-               bool informUserWhenPreviousTaskIsCompleted)
+               bool informUserOfNextTaskWhenThisIsCompleted,
+               Guid nextTaskId)
         {
             Domain.Tasking.Task task = new Domain.Tasking.Task(
                 Guid.NewGuid(),
@@ -39,7 +40,8 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
                 taskOwnerId,
                 shouldBeCompletedBefore,
                 informManagerAboutProgress,
-                informUserWhenPreviousTaskIsCompleted);
+                informUserOfNextTaskWhenThisIsCompleted,
+                nextTaskId);
             await _taskRepository.CreateAsync(task);
 
             return true;
@@ -57,7 +59,8 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
                 task.TaskOwnerId,
                 task.ShouldBeCompletedBefore,
                 task.InformManagerAboutProgress,
-                task.InformUserWhenPreviousTaskIsCompleted);
+                task.InformUserOfNextTaskWhenThisIsCompleted,
+                task.NextTaskId);
 
             string email = await _employeeRepository.GetEmailOfEmployeeAsync(task.TaskOwnerId);
 

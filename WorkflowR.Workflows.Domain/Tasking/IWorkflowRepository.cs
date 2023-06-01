@@ -2,9 +2,9 @@
 {
     public interface IWorkflowRepository
     {
-        void Create(Workflow workflow);
-        void Update(Workflow workflow);
-        Workflow Read(Guid guid);
-        void Delete(Guid guid);
+        System.Threading.Tasks.Task CreateAsync(Workflow workflow);
+        System.Threading.Tasks.Task UpdateAsync(Workflow workflow);
+        System.Threading.Tasks.Task<Workflow> ReadAsync(Guid guid);
+        System.Threading.Tasks.Task DeleteAsync(Guid guid);
     }
 }
