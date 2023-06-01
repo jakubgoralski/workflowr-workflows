@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using WorkflowR.Workflows.Domain.Tasking;
 using WorkflowR.Workflows.Infrastructure.EF.Configs;
 using WorkflowR.Workflows.Infrastructure.MediatR;
 
@@ -7,7 +8,9 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Contexts
 {
     public sealed class WorkflowsWriteDbContext : DbContext
     {
+        public DbSet<Workflow> Workflows { get; set; }
         public DbSet<Domain.Tasking.Task> Tasks { get; set; }
+        
         public readonly IMediator _mediator;
 
         public WorkflowsWriteDbContext(
@@ -23,6 +26,7 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Contexts
             modelBuilder.HasDefaultSchema("workflows");
 
             var configuration = new WriteConfiguration();
+            modelBuilder.ApplyConfiguration<Workflow>(configuration);
             modelBuilder.ApplyConfiguration<Domain.Tasking.Task>(configuration);
         }
 

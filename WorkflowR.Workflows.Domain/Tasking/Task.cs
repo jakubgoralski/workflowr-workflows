@@ -11,7 +11,8 @@ namespace WorkflowR.Workflows.Domain.Tasking
         private Guid TaskOwnerId { get; set; }
         private DateTime ShouldBeCompletedBefore { get; set; }
         private bool InformManagerAboutProgress { get; set; }
-        private bool InformUserWhenPreviousTaskIsCompleted { get; set; }
+        private bool InformUserOfNextTaskWhenThisIsCompleted { get; set; }
+        private Guid NextTaskId { get; set; }
 
         public Task()
         {
@@ -32,7 +33,8 @@ namespace WorkflowR.Workflows.Domain.Tasking
             Guid taskOwnerId,
             DateTime shouldBeCompletedBefore,
             bool informManagerAboutProgress,
-            bool informUserWhenPreviousTaskIsCompleted)
+            bool informUserOfNextTaskWhenThisIsCompleted,
+            Guid nextTaskId)
         {
             Id = taskId;
             TaskName = taskName;
@@ -41,7 +43,8 @@ namespace WorkflowR.Workflows.Domain.Tasking
             TaskOwnerId = taskOwnerId;
             ShouldBeCompletedBefore = shouldBeCompletedBefore;
             InformManagerAboutProgress = informManagerAboutProgress;
-            InformUserWhenPreviousTaskIsCompleted = informUserWhenPreviousTaskIsCompleted;
+            InformUserOfNextTaskWhenThisIsCompleted = informUserOfNextTaskWhenThisIsCompleted;
+            NextTaskId = nextTaskId;
         }
 
         public void ChangeStatus(Status status, string emailTo)
