@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WorkflowR.Workflows.Domain.Notifying;
 using WorkflowR.Workflows.Domain.Tasking.Repositories;
 using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 
@@ -8,8 +9,7 @@ namespace WorkflowR.Workflows.Infrastructure.Repositories
     {
         private readonly WorkflowsWriteDbContext _workflowsDbContext;
 
-        public TaskRepository(
-            WorkflowsWriteDbContext workflowsDbContext)
+        public TaskRepository(WorkflowsWriteDbContext workflowsDbContext)
         {
             _workflowsDbContext = workflowsDbContext;
         }
@@ -43,16 +43,9 @@ namespace WorkflowR.Workflows.Infrastructure.Repositories
         }
 
         public async Task<Domain.Tasking.Task> GetAsync(Guid taskId)
-            => await _workflowsDbContext.Tasks
-            //.Include("TaskName")
-            //.Include("TaskOwnerId")
-            //.Include("TaskDescription")
-            //.Include("TaskStatus")
-            //.Include("ShouldBeCompletedBefore")
-            //.Include("InformManagerAboutProgress")
-            //.Include("InformUserOfNextTaskWhenThisIsCompleted")
-            //.Include("NextTaskId")
-            //.Include("WorkflowId")
-            .SingleOrDefaultAsync(x => x.Id == taskId);
+        {
+            Domain.Tasking.Task task = await _workflowsDbContext.Tasks.SingleOrDefaultAsync(x => x.Id == taskId);
+            return task;
+        }
     }
 }

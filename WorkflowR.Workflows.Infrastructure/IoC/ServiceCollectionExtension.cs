@@ -24,9 +24,9 @@ namespace WorkflowR.Worklows.Presentation.IoC
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             // Domain Policies
-            services.AddSingleton<INotificationPolicy, NotifyTaskOwnerPolicy>();
-            services.AddSingleton<INotificationPolicy, NotifyOwnerOfNextTaskPolicy>();
-            services.AddSingleton<INotificationPolicy, NotifyManagerPolicy>();
+            services.AddScoped<INotificationPolicy, NotifyTaskOwnerPolicy>();
+            services.AddScoped<INotificationPolicy, NotifyOwnerOfNextTaskPolicy>();
+            services.AddScoped<INotificationPolicy, NotifyManagerPolicy>();
 
             // GrapqhQL
             services
@@ -41,7 +41,7 @@ namespace WorkflowR.Worklows.Presentation.IoC
             // gRPC
             services.AddGrpcClient<EmployeesGrpcService.EmployeesGrpcServiceClient>(o =>
             {
-                o.Address = new Uri("http://localhost:32765"); // http://employees:81
+                o.Address = new Uri("http://localhost:32766"); // http://employees:81
             })
             .ConfigurePrimaryHttpMessageHandler(() =>
              {

@@ -1,8 +1,10 @@
-﻿namespace WorkflowR.Workflows.Domain.Notifying
+﻿using WorkflowR.Workflows.Domain.Tasking;
+
+namespace WorkflowR.Workflows.Domain.Notifying
 {
     public interface INotificationPolicy
     {
         bool IsApplicable(PolicyData data);
-        System.Threading.Tasks.Task<string> GetEmailAsync(Guid employeeId, Guid taskId);
+        System.Threading.Tasks.Task<(string address, string message)> GetEmailAsync(StatusChangedDomainEvent notification);
     }
 }

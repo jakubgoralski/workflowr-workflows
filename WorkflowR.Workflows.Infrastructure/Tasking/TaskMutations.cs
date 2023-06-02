@@ -1,8 +1,8 @@
 ﻿using WorkflowR.Workflows.Application.Exceptions;
 using WorkflowR.Workflows.Domain.Managing;
+using WorkflowR.Workflows.Domain.Notifying;
 using WorkflowR.Workflows.Domain.Tasking;
 using WorkflowR.Workflows.Domain.Tasking.Repositories;
-using WorkflowR.Workflows.Infrastructure.EF.ReadModels;
 using WorkflowR.Workflows.Infrastructure.Repositories.Interfaces;
 
 namespace WorkflowR.Workflows.Infrastructure.Tasking
@@ -11,19 +11,13 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
     {
         private readonly ITaskRepository _taskRepository;
         private readonly IWorkflowRepository _workflowRepository;
-        private readonly ITaskReadRepository _taskReadRepository;
-        private readonly IEmployeeRepository _employeeRepository;
 
         public TaskMutations(
             ITaskRepository taskRepository,
-            IWorkflowRepository workflowRepository,
-            ITaskReadRepository taskReadRepository,
-            IEmployeeRepository employeeRepository)
+            IWorkflowRepository workflowRepository)
         {
             _taskRepository = taskRepository;
             _workflowRepository = workflowRepository;
-            _taskReadRepository = taskReadRepository;
-            _employeeRepository = employeeRepository;
         }
 
         public async Task<bool> AddWorkflowAsync(
@@ -90,7 +84,7 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
         public async System.Threading.Tasks.Task<bool> UpdateStatusAsync(Guid taskId, int newStatus)
         {
             Domain.Tasking.Task task = await _taskRepository.GetAsync(taskId);
-            await task.ChangeStatusAsync((Status)newStatus);
+            task.ChangeStatus((Status)newStatus);
 
             await _taskRepository.UpdateAsync(task);
             return true;
