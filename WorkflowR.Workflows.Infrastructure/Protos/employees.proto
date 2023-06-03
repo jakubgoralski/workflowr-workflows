@@ -6,6 +6,7 @@ package greet;
 
 service EmployeesGrpcService {
   rpc GetEmail (GetEmailRequest) returns (GetEmailReply);
+  rpc GetManagersEmail (GetEmailRequest) returns (GetEmailReply);
 }
 
 message GetEmailRequest {

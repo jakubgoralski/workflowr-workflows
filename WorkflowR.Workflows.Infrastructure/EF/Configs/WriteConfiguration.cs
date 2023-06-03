@@ -43,6 +43,8 @@ namespace WorkflowR.Workflows.Infrastructure.EF.Configs
                 .HasColumnName("InformUserOfNextTaskWhenThisIsCompleted");
             builder.Property(typeof(Guid), "NextTaskId")
                 .HasColumnName("NextTaskId");
+            builder.Property(typeof(Guid), "WorkflowId")
+                .HasColumnName("WorkflowId");
 
             builder.ToTable("task");
         }

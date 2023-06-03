@@ -27,5 +27,22 @@ namespace WorkflowR.Workflows.Infrastructure.Repositories
                 throw;
             }
         }
+
+        public async Task<string> GetEmailOfManagerAsync(Guid employeeId)
+        {
+            try
+            {
+                GetEmailRequest getEmailRequest = new GetEmailRequest();
+                getEmailRequest.Id = employeeId.ToString();
+
+                GetEmailReply response = await _grpcClient.GetManagersEmailAsync(getEmailRequest);
+                return response.Email;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
     }
 }

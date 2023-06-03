@@ -1,8 +1,8 @@
-﻿using employees;
-using WorkflowR.Workflows.Application.Exceptions;
+﻿using WorkflowR.Workflows.Application.Exceptions;
 using WorkflowR.Workflows.Domain.Managing;
+using WorkflowR.Workflows.Domain.Notifying;
 using WorkflowR.Workflows.Domain.Tasking;
-using WorkflowR.Workflows.Infrastructure.EF.ReadModels;
+using WorkflowR.Workflows.Domain.Tasking.Repositories;
 using WorkflowR.Workflows.Infrastructure.Repositories.Interfaces;
 
 namespace WorkflowR.Workflows.Infrastructure.Tasking
@@ -10,17 +10,49 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
     public class TaskMutations
     {
         private readonly ITaskRepository _taskRepository;
-        private readonly ITaskReadRepository _taskReadRepository;
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IWorkflowRepository _workflowRepository;
 
         public TaskMutations(
             ITaskRepository taskRepository,
-            ITaskReadRepository taskReadRepository,
-            IEmployeeRepository employeeRepository)
+            IWorkflowRepository workflowRepository)
         {
             _taskRepository = taskRepository;
-            _taskReadRepository = taskReadRepository;
-            _employeeRepository = employeeRepository;
+            _workflowRepository = workflowRepository;
+        }
+
+        public async Task<bool> AddWorkflowAsync(
+            string name,
+            Guid ownerId,
+            Guid firstTaskInChain)
+        {
+            Workflow workflow = new Workflow(
+                Guid.NewGuid(),
+                name,
+                new LinkedList<Domain.Tasking.Task>(),
+                ownerId,
+                Status.New,
+                firstTaskInChain);
+            await _workflowRepository.CreateAsync(workflow);
+
+            return true;
+        }
+
+        public async Task<bool> UpdateWorkflowAsync(
+            string name,
+            Guid ownerId,
+            int status,
+            Guid firstTaskInChain)
+        {
+            Workflow workflow = new Workflow(
+                Guid.NewGuid(),
+                name,
+                new LinkedList<Domain.Tasking.Task>(),
+                ownerId,
+                (Status)status,
+                firstTaskInChain);
+            await _workflowRepository.UpdateAsync(workflow);
+
+            return true;
         }
 
         public async Task<bool> AddTaskAsync(
@@ -30,7 +62,8 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
                DateTime shouldBeCompletedBefore,
                bool informManagerAboutProgress,
                bool informUserOfNextTaskWhenThisIsCompleted,
-               Guid nextTaskId)
+               Guid nextTaskId,
+               Guid workflowId)
         {
             Domain.Tasking.Task task = new Domain.Tasking.Task(
                 Guid.NewGuid(),
@@ -41,7 +74,8 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
                 shouldBeCompletedBefore,
                 informManagerAboutProgress,
                 informUserOfNextTaskWhenThisIsCompleted,
-                nextTaskId);
+                nextTaskId,
+                workflowId);
             await _taskRepository.CreateAsync(task);
 
             return true;
@@ -49,25 +83,10 @@ namespace WorkflowR.Workflows.Infrastructure.Tasking
 
         public async System.Threading.Tasks.Task<bool> UpdateStatusAsync(Guid taskId, int newStatus)
         {
-            TaskReadModel task = _taskReadRepository.ReadAsync(taskId);
+            Domain.Tasking.Task task = await _taskRepository.GetAsync(taskId);
+            task.ChangeStatus((Status)newStatus);
 
-            Domain.Tasking.Task taskDomain = new Domain.Tasking.Task(
-                task.Id,
-                task.TaskName,
-                task.TaskDescription,
-                (Status)task.TaskStatus,
-                task.TaskOwnerId,
-                task.ShouldBeCompletedBefore,
-                task.InformManagerAboutProgress,
-                task.InformUserOfNextTaskWhenThisIsCompleted,
-                task.NextTaskId);
-
-            string email = await _employeeRepository.GetEmailOfEmployeeAsync(task.TaskOwnerId);
-
-            taskDomain.ChangeStatus((Status)newStatus, email);
-
-            await _taskRepository.UpdateAsync(taskDomain);
-
+            await _taskRepository.UpdateAsync(task);
             return true;
         }
 

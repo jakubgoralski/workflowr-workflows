@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using WorkflowR.Workflows.Application.EventHandlers;
 using WorkflowR.Workflows.Application.Messaging.Interfaces;
-using WorkflowR.Workflows.Domain.Tasking;
 using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 using WorkflowR.Workflows.Infrastructure.Options;
 using WorkflowR.Workflows.Infrastructure.RabbitMq;
@@ -14,6 +13,9 @@ using employees;
 using WorkflowR.Workflows.Infrastructure.Repositories.Interfaces;
 using WorkflowR.Workflows.Infrastructure.Repositories;
 using WorkflowR.Workflows.Domain.Managing;
+using WorkflowR.Workflows.Domain.Tasking.Repositories;
+using Microsoft.AspNetCore.Authorization.Policy;
+using WorkflowR.Workflows.Domain.Notifying;
 
 namespace WorkflowR.Worklows.Presentation.IoC
 {
@@ -21,6 +23,11 @@ namespace WorkflowR.Worklows.Presentation.IoC
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            // Domain Policies
+            services.AddScoped<INotificationPolicy, NotifyTaskOwnerPolicy>();
+            services.AddScoped<INotificationPolicy, NotifyOwnerOfNextTaskPolicy>();
+            services.AddScoped<INotificationPolicy, NotifyManagerPolicy>();
+
             // GrapqhQL
             services
                 .AddGraphQLServer()
@@ -34,7 +41,7 @@ namespace WorkflowR.Worklows.Presentation.IoC
             // gRPC
             services.AddGrpcClient<EmployeesGrpcService.EmployeesGrpcServiceClient>(o =>
             {
-                o.Address = new Uri("localhost"); // http://employees:81
+                o.Address = new Uri("http://employees:81"); // http://employees:81 / http://localhost:32766
             })
             .ConfigurePrimaryHttpMessageHandler(() =>
              {
@@ -59,12 +66,13 @@ namespace WorkflowR.Worklows.Presentation.IoC
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<IWorkflowRepository, WorkflowRepository>();
             services.AddScoped<ITaskReadRepository, TaskReadRepository>();
+            services.AddScoped<IWorkflowReadRepository, WorkflowReadRepository>();
 
             // MediatR
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<StatusChangedDomainEventHandler>());
 
             // RabbitMq
-            var factory = new ConnectionFactory { HostName = "localhost" }; // localhost for self run / rabbitmq for container
+            var factory = new ConnectionFactory { HostName = "rabbitmq" }; // localhost for self run / rabbitmq for container
             var connection = factory.CreateConnection();
             services.AddSingleton(connection);
             services.AddSingleton<IConnectionFactory, ConnectionFactory>();

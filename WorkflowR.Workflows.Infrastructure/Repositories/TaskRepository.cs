@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WorkflowR.Workflows.Domain.Tasking;
+using WorkflowR.Workflows.Domain.Notifying;
+using WorkflowR.Workflows.Domain.Tasking.Repositories;
 using WorkflowR.Workflows.Infrastructure.EF.Contexts;
 
 namespace WorkflowR.Workflows.Infrastructure.Repositories
@@ -8,8 +9,7 @@ namespace WorkflowR.Workflows.Infrastructure.Repositories
     {
         private readonly WorkflowsWriteDbContext _workflowsDbContext;
 
-        public TaskRepository(
-            WorkflowsWriteDbContext workflowsDbContext)
+        public TaskRepository(WorkflowsWriteDbContext workflowsDbContext)
         {
             _workflowsDbContext = workflowsDbContext;
         }
@@ -40,6 +40,12 @@ namespace WorkflowR.Workflows.Infrastructure.Repositories
 
             _workflowsDbContext.Tasks.Remove(task);
             await _workflowsDbContext.SaveEntitiesAsync();
+        }
+
+        public async Task<Domain.Tasking.Task> GetAsync(Guid taskId)
+        {
+            Domain.Tasking.Task task = await _workflowsDbContext.Tasks.SingleOrDefaultAsync(x => x.Id == taskId);
+            return task;
         }
     }
 }
