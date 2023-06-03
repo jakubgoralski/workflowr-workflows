@@ -1,11 +1,8 @@
 ﻿using WorkflowR.Workflows.Application.Exceptions;
-using WorkflowR.Workflows.Domain.Managing;
-using WorkflowR.Workflows.Domain.Notifying;
 using WorkflowR.Workflows.Domain.Tasking;
 using WorkflowR.Workflows.Domain.Tasking.Repositories;
-using WorkflowR.Workflows.Infrastructure.Repositories.Interfaces;
 
-namespace WorkflowR.Workflows.Infrastructure.Tasking
+namespace WorkflowR.Workflows.Presentation.Tasking
 {
     public class TaskMutations
     {
