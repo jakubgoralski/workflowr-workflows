@@ -1,0 +1,34 @@
+To run it locally:
+
+// create docker network
+docker network create workflowr
+
+// create rabbitmq contaner 
+docker run -d --restart always --hostname rabbitmq -e "RABBITMQ_ERLANG_COOKIE=uniqueerlangcookie" -p 15672:15672 -p 5672:5672 --network workflowr -v rabbitmq_data:/var/lib/rabbitmq/mnesia --name rabbitmq rabbitmq:3-management 
+
+// create mssql container
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Test1234!" `
+   -p 1433:1433 --name workflowsmssql --hostname workflowsmssql --network workflowr `
+   -d `
+   mcr.microsoft.com/mssql/server:2022-latest
+
+// create notifications container
+dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer
+
+docker run -p 32769:80 --expose 587 --network workflowr --name notifications workflowr-notifications-presentation:1.0.0 
+
+// create workflows container
+
+dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer
+
+docker run -p 32768:80 -p 32767:443 --expose 587 --network workflowr --name workflows workflowr-worklows-presentation:1.0.0
+
+// create employees container
+
+dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer
+
+docker run -p 32766:81 -p 32765:80 --network workflowr --name employees workflowr-employees-presentation:1.0.0 
+
+// EF Migrations RUN IN INFRA LAYER
+dotnet ef migrations add MergeName --context EmployeeReadDbContext -o EF/Migrations --project /WorkflowR.Workflows.Infrastructure/ --startup-project /WorkflowR.Worklows.Presentation/
+dotnet ef database update --context EmployeeReadDbContext --startup-project ../WorkflowR.Workflows.Presentation/

@@ -1,7 +1,7 @@
 ﻿using WorkflowR.Workflows.Infrastructure.EF.ReadModels;
 using WorkflowR.Workflows.Infrastructure.Repositories.Interfaces;
 
-namespace WorkflowR.Workflows.Infrastructure.Tasking
+namespace WorkflowR.Workflows.Presentation.Tasking
 {
     public class TaskQueries
     {

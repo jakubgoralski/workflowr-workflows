@@ -1,5 +1,4 @@
 ﻿using WorkflowR.Workflows.Domain.Abstraction;
-using WorkflowR.Workflows.Domain.Notifying;
 
 namespace WorkflowR.Workflows.Domain.Tasking
 {
@@ -57,22 +56,5 @@ namespace WorkflowR.Workflows.Domain.Tasking
         {
             return TaskOwnerId;
         }
-
-        //public async System.Threading.Tasks.Task InformAboutCompletenessOfPreviousTaskAsync()
-        //{
-
-        //    PolicyData data = new PolicyData(false, false, true, TaskStatus);
-        //    IEnumerable<INotificationPolicy> applicablePolicies = _policies.Where(x => x.IsApplicable(data));
-
-        //    foreach (INotificationPolicy policy in applicablePolicies)
-        //    {
-        //        string email = await policy.GetEmailAsync(TaskOwnerId, NextTaskId);
-        //        if (!String.IsNullOrWhiteSpace(email))
-        //        {
-        //            string message = $"Task `{TaskName}` (id: {Id}) is waiting as preceding task has been completed`.";
-        //            RaiseDomainEvent(new StatusChangedDomainEvent(message, email));
-        //        }
-        //    }
-        //}
     }
 }
