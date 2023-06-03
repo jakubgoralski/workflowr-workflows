@@ -41,7 +41,7 @@ namespace WorkflowR.Worklows.Presentation.IoC
             // gRPC
             services.AddGrpcClient<EmployeesGrpcService.EmployeesGrpcServiceClient>(o =>
             {
-                o.Address = new Uri("http://localhost:32766"); // http://employees:81
+                o.Address = new Uri("http://employees:81"); // http://employees:81 / http://localhost:32766
             })
             .ConfigurePrimaryHttpMessageHandler(() =>
              {
@@ -72,7 +72,7 @@ namespace WorkflowR.Worklows.Presentation.IoC
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<StatusChangedDomainEventHandler>());
 
             // RabbitMq
-            var factory = new ConnectionFactory { HostName = "localhost" }; // localhost for self run / rabbitmq for container
+            var factory = new ConnectionFactory { HostName = "rabbitmq" }; // localhost for self run / rabbitmq for container
             var connection = factory.CreateConnection();
             services.AddSingleton(connection);
             services.AddSingleton<IConnectionFactory, ConnectionFactory>();
